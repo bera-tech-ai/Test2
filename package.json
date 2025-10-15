@@ -1,0 +1,16 @@
+{
+  "name": "payhero-stk-test",
+  "version": "1.1.0",
+  "description": "Simple PayHero STK Push Test App with Transaction Log by Bruce Bera",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.19.2",
+    "node-fetch": "^3.3.2",
+    "fs-extra": "^11.2.0"
+  }
+}
