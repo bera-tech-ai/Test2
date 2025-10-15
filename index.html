@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PayHero STK Test | BERA TECH</title>
+  <style>
+    body { font-family: Arial; background:#0d1117; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; }
+    input { padding:10px; margin:5px; border-radius:8px; border:none; width:250px; }
+    button { padding:10px 20px; background:#00a859; border:none; border-radius:8px; color:#fff; cursor:pointer; font-weight:bold; }
+    button:hover { background:#007f46; }
+    .card { background:#161b22; padding:25px; border-radius:10px; text-align:center; box-shadow:0 0 10px rgba(0,0,0,0.3); width:320px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>PayHero STK Push Test</h2>
+    <form id="payForm">
+      <input type="text" id="phone" placeholder="Enter Phone (07...)" required /><br />
+      <input type="number" id="amount" placeholder="Enter Amount" required /><br />
+      <button type="submit">Pay Now</button>
+    </form>
+    <p id="response"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("payForm");
+    const responseMsg = document.getElementById("response");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const phone = document.getElementById("phone").value;
+      const amount = document.getElementById("amount").value;
+
+      responseMsg.innerText = "Processing payment...";
+
+      const res = await fetch("/pay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, amount })
+      });
+
+      const data = await res.json();
+      responseMsg.innerText = data.message;
+      if (data.success) alert("✅ Payment initiated! Check your phone to confirm.");
+    });
+  </script>
+</body>
+</html>
