@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PayHero STK Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    form {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    input, button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>PayHero STK Push Test</h2>
+  <form id="payForm">
+    <input type="text" id="phone" placeholder="Enter Phone e.g. 2547..." required>
+    <input type="number" id="amount" placeholder="Enter Amount" required>
+    <button type="submit">Pay Now</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    const form = document.getElementById("payForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const phone = document.getElementById("phone").value.trim();
+      const amount = document.getElementById("amount").value.trim();
+      message.textContent = "Processing payment...";
+
+      const res = await fetch("/api/payhero", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, amount }),
+      });
+
+      const data = await res.json();
+      if (data.error) {
+        message.textContent = `❌ ${data.error}`;
+      } else {
+        message.textContent = "✅ STK Push sent! Check your phone.";
+      }
+    });
+  </script>
+</body>
+</html>
