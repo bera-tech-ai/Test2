@@ -1,8 +1,14 @@
 {
-  "name": "payhero-stk-test",
-  "version": "1.0.0",
-  "type": "module",
+  "name": "payhero-stk-sdk",
+  "version": "1.0.1",
+  "description": "PayHero STK Push Test App using SDK",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "node-fetch": "^3.3.2"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "payhero-devkit": "^1.1.1"
   }
 }
