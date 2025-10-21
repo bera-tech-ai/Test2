@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayHero STK Push</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #0070f3, #00c4cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0070f3;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        input::placeholder {
+            color: #888;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #0070f3, #0060df);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 112, 243, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .message {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .message.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #00ff00;
+        }
+
+        .message.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff4444;
+        }
+
+        .message.processing {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid rgba(255, 255, 0, 0.3);
+            color: #ffff00;
+        }
+
+        .response-details {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: #0070f3;
+        }
+
+        .instructions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: "•";
+            color: #0070f3;
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💳 PayHero STK Push</h1>
+            <p>Secure M-Pesa Payment Gateway</p>
+        </div>
+
+        <form id="paymentForm">
+            <div class="form-group">
+                <label for="phone_number">📱 Phone Number</label>
+                <input 
+                    type="tel" 
+                    id="phone_number" 
+                    name="phone_number" 
+                    placeholder="2547XXXXXXX" 
+                    pattern="254[17]\d{8}"
+                    required
+                >
+                <small style="color: #888; font-size: 12px;">Format: 2547XXXXXXX</small>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">💰 Amount (KES)</label>
+                <input 
+                    type="number" 
+                    id="amount" 
+                    name="amount" 
+                    placeholder="100" 
+                    min="1" 
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn" id="payButton">
+                Pay Now
+            </button>
+        </form>
+
+        <div id="message" class="message" style="display: none;"></div>
+        <div id="responseDetails" class="response-details" style="display: none;"></div>
+
+        <div class="instructions">
+            <h3>How to Pay:</h3>
+            <ul>
+                <li>Enter your M-Pesa registered phone number</li>
+                <li>Enter the amount in Kenyan Shillings</li>
+                <li>Click "Pay Now" to receive STK Push</li>
+                <li>Enter your M-Pesa PIN when prompted</li>
+                <li>Wait for payment confirmation</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const payButton = document.getElementById('payButton');
+            const messageDiv = document.getElementById('message');
+            const responseDiv = document.getElementById('responseDetails');
+            
+            const phoneNumber = document.getElementById('phone_number').value;
+            const amount = document.getElementById('amount').value;
+
+            // Reset previous messages
+            messageDiv.style.display = 'block';
+            messageDiv.className = 'message processing';
+            messageDiv.textContent = 'Processing payment...';
+            responseDiv.style.display = 'none';
+            
+            // Disable button
+            payButton.disabled = true;
+            payButton.textContent = 'Processing...';
+
+            try {
+                const response = await fetch('/api/payhero', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phone_number: phoneNumber,
+                        amount: amount
+                    })
+                });
+
+                const data = await response.json();
+                
+                // Display response details
+                responseDiv.style.display = 'block';
+                responseDiv.textContent = JSON.stringify(data, null, 2);
+
+                if (response.ok && data.success) {
+                    messageDiv.className = 'message success';
+                    messageDiv.innerHTML = '✅ STK Push sent! Check your phone.';
+                } else {
+                    messageDiv.className = 'message error';
+                    const errorMessage = data.error || data.ResponseDescription || data.ResultDesc || 'Payment failed';
+                    messageDiv.innerHTML = `❌ ${errorMessage}`;
+                }
+            } catch (error) {
+                messageDiv.className = 'message error';
+                messageDiv.innerHTML = '❌ Network error. Please try again.';
+                responseDiv.style.display = 'block';
+                responseDiv.textContent = 'Error: ' + error.message;
+            } finally {
+                // Re-enable button
+                payButton.disabled = false;
+                payButton.textContent = 'Pay Now';
+            }
+        });
+
+        // Format phone number input
+        document.getElementById('phone_number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.startsWith('0')) {
+                value = '254' + value.substring(1);
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
