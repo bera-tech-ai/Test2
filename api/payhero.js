@@ -1,22 +1,9 @@
 import fetch from 'node-fetch';
+import express from 'express';
 
-export default async function handler(req, res) {
-  // Set CORS headers for frontend communication
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  
-  // Handle OPTIONS request for CORS preflight
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+const router = express.Router();
 
-  // Only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+router.post('/', async (req, res) => {
   try {
     const { phone_number, amount } = req.body;
     
@@ -43,25 +30,25 @@ export default async function handler(req, res) {
       });
     }
 
-    // Prepare PayHero API request payload [citation:1]
+    // Prepare PayHero API request payload 
     const payload = {
       amount: amountNum,
       phone_number: phone_number,
-      channel_id: parseInt(process.env.PAYHERO_ACCOUNT_ID),
+      channel_id: parseInt(process.env.PAYHERO_ACCOUNT_ID || '3342'),
       provider: "m-pesa",
       external_reference: `INV-${Date.now()}`,
       customer_name: "Customer",
-      callback_url: process.env.CALLBACK_URL || "https://test2-peach-iota.vercel.app/"
+      callback_url: process.env.CALLBACK_URL || "https://your-app.onrender.com/"
     };
 
     console.log('Sending request to PayHero:', JSON.stringify(payload, null, 2));
 
-    // Make request to PayHero API [citation:1]
+    // Make request to PayHero API 
     const response = await fetch('https://backend.payhero.co.ke/api/v2/payments', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': process.env.PAYHERO_BASIC_AUTH
+        'Authorization': process.env.PAYHERO_BASIC_AUTH || 'Basic djM0QlPUTzA1UXg4TllqWW5DSVQ6UENUZHVZR3BicjJyOUFlNnhXdDlZQlVyUWdOUWhyTVM1dlJJVVXUdW=='
       },
       body: JSON.stringify(payload)
     });
@@ -94,4 +81,6 @@ export default async function handler(req, res) {
       error: 'Internal server error: ' + error.message
     });
   }
-}
+});
+
+export default router;
