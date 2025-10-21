@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
       provider: "m-pesa",
       external_reference: `INV-${Date.now()}`,
       customer_name: "Customer",
-      callback_url: process.env.CALLBACK_URL || "https://your-app.onrender.com/"
+      callback_url: process.env.CALLBACK_URL || "https://test2-1-trtq.onrender.com/"
     };
 
     console.log('Sending request to PayHero:', JSON.stringify(payload, null, 2));
