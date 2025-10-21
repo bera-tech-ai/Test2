@@ -2,18 +2,16 @@
   "name": "payhero-stk-push-app",
   "version": "1.0.0",
   "type": "module",
-  "description": "PayHero STK Push payment web app deployable on Vercel",
-  "main": "index.js",
+  "description": "PayHero STK Push payment web app deployable on Render",
+  "main": "server.js",
   "scripts": {
-    "dev": "vercel dev",
     "start": "node server.js",
+    "dev": "node server.js",
     "build": "echo 'No build step required'"
   },
   "dependencies": {
+    "express": "^4.18.2",
     "node-fetch": "^3.3.2"
-  },
-  "devDependencies": {
-    "vercel": "^28.0.0"
   },
   "engines": {
     "node": ">=18.x"
@@ -22,7 +20,7 @@
     "payhero",
     "mpesa",
     "stk-push",
-    "vercel",
+    "render",
     "nodejs"
   ]
 }
